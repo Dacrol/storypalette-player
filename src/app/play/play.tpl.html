@@ -1,0 +1,21 @@
+<div id="connectionStatus">
+    <h1>Connection: {{connectionStatus}}</h1>
+</div>
+
+<img class="fullscreenImage" ng-style="imageOpacity" ng-src="{{imageUrl}}" ng-class="imageClass"/>
+
+<div ng-show="!progress.done" class="loading">
+    <h1>Har laddat</h1>
+	<div class="progress_wrapper" ng-show="!progress.image.done">
+		<div class="progress progress-striped active">
+			<div class="bar" ng-style="progress.image.style"></div>
+		</div>
+		<h1 class="inline">{{progress.image.loaded}}</h1>&nbsp<h3 class="inline">av</h3>&nbsp<h1 class="inline">{{progress.image.count}}</h1>&nbsp<h3 class="inline">bilder</h3>
+	</div>
+	<div class="progress_wrapper" ng-show="!progress.audio.done">
+		<div class="progress progress-striped active">
+			<div class="bar bar-success" ng-style="progress.audio.style"></div>
+		</div>
+		<h1 class="inline">{{progress.audio.loaded}}</h1>&nbsp<h3 class="inline">av</h3>&nbsp<h1 class="inline">{{progress.audio.count}}</h1>&nbsp<h3 class="inline">ljud</h3>
+	</div>
+</div>
