@@ -153,7 +153,7 @@ angular.module('sp.player.play', [
 
   // These should move to services
   var getSoundUrl = function(asset) {
-    var url = '/sound/' + asset.source.id + '.' + asset.source.extension;
+    var url = config.apiBase + 'sound/' + asset.source.id + '.' + asset.source.extension;
     return url;
   };
 
