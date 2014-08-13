@@ -33,6 +33,7 @@ module.exports = {
       'vendor/angular-animate/angular-animate.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+      'vendor/howler/howler.js'
     ],
     css: [],
   },

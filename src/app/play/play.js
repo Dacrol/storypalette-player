@@ -1,25 +1,19 @@
 angular.module('sp.player.play', [
   'sp.player.common.palettes',
 
-  'uiSocket', 
-  'uiAuth',
   'uiImagePlayer', 
   'uiAudioPlayer',
 
   'ui.router'
 ])
 
-.config(function($stateProvider, authProvider, socketProvider) {
+.config(function($stateProvider) {
 
-  $stateProvider.state('play', {
+  $stateProvider.state('user.play', {
     url: '/play/:paletteId',
     templateUrl: 'play/play.tpl.html',
     controller: 'PlayCtrl',
     resolve: {
-      user: authProvider.requireUser,
-      socketInfo: function(user, socket) {
-        return socketProvider.requireAuthenticatedConnection(socket, user);
-      },
       palette: function(palettes, $stateParams) {
         var paletteId = $stateParams['paletteId'];
         return palettes.one(paletteId).then(function(palette) {
@@ -30,7 +24,7 @@ angular.module('sp.player.play', [
   });
 })
 
-.controller('PlayCtrl', function($scope, $location, socket, $routeParams, Palettes, audioPlayer, imagePlayer, palette) {
+.controller('PlayCtrl', function($scope, $location, socket, $stateParams,audioPlayer, imagePlayer, palette, config) {
   console.log('\n**** PlayCtrl ****');
 
   var resetPlayers = function() {
@@ -44,11 +38,6 @@ angular.module('sp.player.play', [
     image: {done: true},
     done: true
   };
-
-  $scope.$on('$destroy', function (event) {
-    console.log("DESTROY!");
-    // socket.removeListener(this);
-  });
 
   // Palette is loaded when page is loaded
   $scope.palette = palette; // Palettes.getPalette();
@@ -144,9 +133,9 @@ angular.module('sp.player.play', [
         break;
       case 'sound':
         if (asset.value.state === 'stopped') {
-            audioPlayer.stop(data.assetId);
+          audioPlayer.stop(data.assetId);
         } else if (asset.value.state === 'playing') {
-            audioPlayer.play(data.assetId);
+          audioPlayer.play(data.assetId);
         } else {
             //console.log('Unknown sound state');
         }
@@ -177,16 +166,12 @@ angular.module('sp.player.play', [
       options.autoplay = options.loop; // autostart looping sounds
       options.volume = options.loop ? 0.0 : 0.9;  // start
       audioPlayer.newSound(i, getSoundUrl(asset), options);
+
       // TODO: Hack, it doesn't work to pass 0.0 as volume on creation
       if (options.loop) {
          audioPlayer.setVolume(i, 0.0);
       }
     }
   }
-
- /* $scope.play = function() {
-      console.log('Running palette: ' + $scope.palette.name);
-      socket.emit('paletteRun', $scope.palette);
-  }; */
 
 });
