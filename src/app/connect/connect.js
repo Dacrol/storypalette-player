@@ -1,6 +1,8 @@
 angular.module('sp.player.connect', [
   'uiAuth',
   'uiSocket', 
+  'uiAuth', 
+  'uiUtils', 
   'ui.router',
 ])
 
@@ -11,8 +13,11 @@ angular.module('sp.player.connect', [
     controller: 'ConnectCtrl',
     resolve: {
       user: authProvider.requireUser,
-      socketInfo: function(user, socket) {
-        return socketProvider.requireAuthenticatedConnection(socket, user);
+      socketInfo: function(user, socket, utils, auth) {
+        var ns = utils.getSocketNamespace(user);
+        var room = utils.getSocketRoom(user);
+        var token = auth.getToken(); 
+        return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
       }
     }
   });
