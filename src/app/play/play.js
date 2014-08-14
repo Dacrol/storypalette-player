@@ -47,20 +47,24 @@ angular.module('sp.player.play', [
   socket.emit('activePalette', $scope.palette);
 
   // Incoming request from Performer
-  socket.on('onRequestPalette', function (paletteId) {
+  socket.on('onRequestPalette', function(paletteId) {
     console.log('PlayCtrl.onRequestPalette: Get palette ', paletteId);
 
     // Performer wants us to switch to another palette
     if ($scope.palette._id === paletteId) {
-      // We're already playing this palette
-      // TODO: Do this onRouteChange instead?
-
+      console.log('Requested palette already playing, just send it to Performer');
       socket.emit('activePalette', $scope.palette);
-      $location.path('/play/' + paletteId);
+
+      //$location.path('/play/' + paletteId);
       //$route.reload();
     } else {
+      console.log('New palette requested, goto new url');
       // Change location to refresh the route and load the new palette
       socket.emit('activePalette', $scope.palette);
+
+      resetPlayers();
+      socket.removeListeners();  // Avoid duplicate event listeners
+
       $location.path('/play/' + paletteId);
     }
   });
@@ -97,7 +101,7 @@ angular.module('sp.player.play', [
   $scope.imageOpacity = {};
 
   // Notify Performer if we navigate away (no palette active)
-  $scope.$on('$locationChangeStart', function (event, next, current) {
+  $scope.$on('$locationChangeStart', function(event, next, current) {
     console.log('>>> PlayCtrl: on $locationChangestart');
     //socket.emit('paletteDeactivate');
   });
@@ -105,14 +109,11 @@ angular.module('sp.player.play', [
   // Reset audio and images when back button is pressed
   $scope.$on('$routeChangeStart', function(next, current) {
     console.log('>>> PlayCtrl: on $routeChangeStart');
-    resetPlayers();
-    socket.removeListeners();  // Avoid duplicate event listeners
   });
 
   // Palette.value has been updated by Performer
   socket.on('onValueUpdate', function (data) {
     console.log('PlayCtrl.onValueUpdate: ', data);
-
     if (data.assetId === null) {
       return;
     }
@@ -139,7 +140,7 @@ angular.module('sp.player.play', [
         }
 
         if (typeof asset.value.volume !== 'undefined') {
-            audioPlayer.setVolume(data.assetId, asset.value.volume);
+          audioPlayer.setVolume(data.assetId, asset.value.volume);
         }
         break;
       case 'light':
@@ -149,7 +150,6 @@ angular.module('sp.player.play', [
         // Send info to dmxpro... somehow!
         break;
     }
-
   });
 
   // These should move to services

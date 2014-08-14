@@ -3,8 +3,9 @@ angular.module('sp.player', [
   'templates-common',
   'templates-shared',
 
-  'sp.player.connect',
+  'sp.player.waiting',
   'sp.player.play',
+
   'sp.player.common.config',
 
   'uiAuth', 
@@ -20,7 +21,7 @@ angular.module('sp.player', [
   $locationProvider.html5Mode(true);  // no hash-urls
 
   // Redirect to connecting state.
-  $urlRouterProvider.when('/', '/connect');
+  $urlRouterProvider.when('/', '/waiting');
 
   // Abstract state for different access levels
   $stateProvider.state('user', {
