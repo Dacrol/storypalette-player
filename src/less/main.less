@@ -1,0 +1,37 @@
+// Application stylesheet. Import styles here.
+
+// TODO: Import only the styles we use.
+@import '../../vendor/bootstrap/less/bootstrap.less';
+
+// Our Bootstrap customizations.
+@import 'variables.less';
+
+/** Hide cursor in Player */
+body {
+  cursor: none !important;
+  color:black;
+  background:black;
+}
+
+.fullscreenImage {
+  z-index: 100;
+  position: fixed;
+  top:0px;
+  left:0px;
+  bottom:0px;
+  right:0px;
+  width: 100%;
+}
+
+.loading {
+  padding: 50px;
+  color: white;
+}
+
+.progress_wrapper {
+  margin: 50px 0;
+}
+
+.inline {
+  display: inline;
+}

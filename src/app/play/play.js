@@ -91,7 +91,7 @@ angular.module('sp.player.play', [
   });
 
   // Preload images
-  imagePlayer.preloadPaletteImages($scope.palette);
+  imagePlayer.preloadPaletteImages($scope.palette, config.apiBase);
 
   $scope.valueUpdate = false;
   $scope.imageOpacity = {};
@@ -119,8 +119,6 @@ angular.module('sp.player.play', [
 
     $scope.valueUpdate = true;
     var asset = $scope.palette.assets[data.assetId];
-    console.log('Asset', asset);
-    console.log('Palette', $scope.palette.name);
     asset.value = data.value;
 
     switch(asset.type) {
@@ -129,7 +127,7 @@ angular.module('sp.player.play', [
         console.log('opacity: ', $scope.imageOpacity);
 
         //$scope.imageClass = asset.value.visible ? 'show' : 'hide';
-        $scope.imageUrl = imagePlayer.getImageUrl(asset);
+        $scope.imageUrl = imagePlayer.getImageUrl(asset, config.apiBase);
         break;
       case 'sound':
         if (asset.value.state === 'stopped') {
@@ -145,7 +143,10 @@ angular.module('sp.player.play', [
         }
         break;
       case 'light':
-        console.log('onValueUpdate light:', asset.value);
+        console.log('onValueUpdate light: colour=', asset.value.colou);
+        
+        // Convert message to dmxpro format
+        // Send info to dmxpro... somehow!
         break;
     }
 
