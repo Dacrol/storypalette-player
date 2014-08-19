@@ -6,7 +6,8 @@ angular.module('sp.player.waiting', [
   $stateProvider.state('user.waiting', {
     url: '/waiting',
     templateUrl: 'waiting/waiting.tpl.html',
-    controller: 'WaitingCtrl'
+    controller: 'WaitingCtrl',
+    
   });
 })
 

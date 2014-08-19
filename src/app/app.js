@@ -9,7 +9,7 @@ angular.module('sp.player', [
   'sp.player.common.config',
 
   'uiAuth', 
-  'uiUtils', 
+  'spUtils', 
   'uiSocket', 
 
   'ui.router',
@@ -31,9 +31,11 @@ angular.module('sp.player', [
       user: authProvider.requireUser,
       socketInfo: function(user, socket, utils, auth) {
         var ns = utils.getSocketNamespace(user);
-        var room = utils.getSocketRoom(user);
         var token = auth.getToken(); 
-        return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
+        utils.getSocketRoom(user).then(function(room) {
+          console.log('got room', room);
+          return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
+        });
       }
     }
   });

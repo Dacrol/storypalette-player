@@ -51,7 +51,7 @@ module.exports = {
     js: [
       // Uses shared_dir
       ['src/common/uiSocket/**/*.js', '!src/common/uiSocket/**/*.spec.js'],
-      ['src/common/uiUtils/**/*.js', '!src/common/uiUtils/**/*.spec.js'],
+      ['src/common/spUtils/**/*.js', '!src/common/spUtils/**/*.spec.js'],
       ['src/common/uiAuth/**/*.js', '!src/common/uiAuth/**/*.spec.js'],
       ['src/common/uiImagePlayer/**/*.js', '!src/common/uiImagePlayer/**/*.spec.js'],
       ['src/common/uiAudioPlayer/**/*.js', '!src/common/uiAudioPlayer/**/*.spec.js']
