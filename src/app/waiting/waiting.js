@@ -13,7 +13,7 @@ angular.module('sp.player.waiting', [
 
 // Waiting for palette
 .controller('WaitingCtrl', function($scope, socket, $location, user) {
-    console.log('WaitingCtrl', user.username);
+    console.log('WaitingCtrl ' +  user.username);
 
     $scope.user = user;
 

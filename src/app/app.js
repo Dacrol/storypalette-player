@@ -7,6 +7,7 @@ angular.module('sp.player', [
   'sp.player.play',
 
   'sp.player.common.config',
+  'sp.player.common.playerApp',
 
   'uiAuth', 
   'spUtils', 
@@ -23,12 +24,21 @@ angular.module('sp.player', [
   // Redirect to connecting state.
   $urlRouterProvider.when('/', '/waiting');
 
+
   // Abstract state for different access levels
   $stateProvider.state('user', {
     abstract: true,
     template: '<ui-view/>',
     resolve: {
-      user: authProvider.requireUser,
+      user: function(playerApp, auth) {
+        var credentials = playerApp.getCredentials(); 
+        if (credentials) {
+          return auth.login(credentials.username, credentials.password); 
+        } else {
+          auth.requireUser(); 
+        }
+      }
+      /*
       socketInfo: function(user, socket, utils, auth) {
         var ns = utils.getSocketNamespace(user);
         var token = auth.getToken(); 
@@ -37,11 +47,13 @@ angular.module('sp.player', [
           return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
         });
       }
+      */
     }
   });
 
   authConfigProvider.setTokenKey('spPlayerToken'); 
   authConfigProvider.setApiBase(config.apiBase); 
+
 
 })
 
