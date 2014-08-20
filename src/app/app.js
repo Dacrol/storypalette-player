@@ -35,19 +35,15 @@ angular.module('sp.player', [
         if (credentials) {
           return auth.login(credentials.username, credentials.password); 
         } else {
-          auth.requireUser(); 
+          return auth.requireUser(); 
         }
-      }
-      /*
+      },
       socketInfo: function(user, socket, utils, auth) {
         var ns = utils.getSocketNamespace(user);
         var token = auth.getToken(); 
-        utils.getSocketRoom(user).then(function(room) {
-          console.log('got room', room);
-          return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
-        });
+        var room = user.roomId;
+        return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
       }
-      */
     }
   });
 
