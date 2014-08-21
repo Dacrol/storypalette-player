@@ -16,7 +16,6 @@ angular.module('sp.player.common.palettes', [
     // Returns a promise
     // TODO: Clean up
     one: function(id) {
-      console.log('Get palette with id: ' + id);
       // TODO: what is returned here?
       return $http.get(apiBase + id)
         .then(function (response) {

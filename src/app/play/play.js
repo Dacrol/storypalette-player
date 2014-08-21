@@ -1,4 +1,6 @@
 angular.module('sp.player.play', [
+  'sp.player.play.lightPlayer',
+
   'sp.player.common.palettes',
 
   'uiImagePlayer', 
@@ -24,7 +26,7 @@ angular.module('sp.player.play', [
   });
 })
 
-.controller('PlayCtrl', function($scope, $location, socket, $stateParams,audioPlayer, imagePlayer, palette, config) {
+.controller('PlayCtrl', function($scope, $state, $location, socket, audioPlayer, imagePlayer, lightPlayer, palette, config, user) {
   console.log('\n**** PlayCtrl ****');
 
   var resetPlayers = function() {
@@ -32,6 +34,9 @@ angular.module('sp.player.play', [
     imagePlayer.reset();
     //initProgress();
   };
+
+  var room = _.find(user.organisation.rooms, {id: user.roomId});
+  lightPlayer.init(room);
 
   $scope.progress = {
     audio: {done: true},
@@ -62,11 +67,25 @@ angular.module('sp.player.play', [
       // Change location to refresh the route and load the new palette
       socket.emit('activePalette', $scope.palette);
 
-      resetPlayers();
-      socket.removeListeners();  // Avoid duplicate event listeners
-
+      disconnect();
       $location.path('/play/' + paletteId);
     }
+  });
+  
+  var disconnect = function() {
+    resetPlayers();
+    socket.removeAllListeners();  // Avoid duplicate event listeners
+  };
+
+  $scope.$on('$destroy', function() {
+    console.log('playCtrl scope destroyed');
+  });
+
+  // Performer disconnected.
+  socket.on('onDisconnect', function(numClientsLeft) {
+    console.log('performer disconnected'); 
+    disconnect(); 
+    $state.go('user.waiting');
   });
 
   imagePlayer.on(['add','progress'], function(progress) {
@@ -86,7 +105,7 @@ angular.module('sp.player.play', [
     $scope.progress.done = $scope.progress.image.done && $scope.progress.audio.done;
 
     if ($scope.progress.audio.done) {
-      audioPlayer.printSounds();
+      //audioPlayer.printSounds();
     }
 
     if (!$scope.$$phase) {
@@ -100,20 +119,9 @@ angular.module('sp.player.play', [
   $scope.valueUpdate = false;
   $scope.imageOpacity = {};
 
-  // Notify Performer if we navigate away (no palette active)
-  $scope.$on('$locationChangeStart', function(event, next, current) {
-    console.log('>>> PlayCtrl: on $locationChangestart');
-    //socket.emit('paletteDeactivate');
-  });
-
-  // Reset audio and images when back button is pressed
-  $scope.$on('$routeChangeStart', function(next, current) {
-    console.log('>>> PlayCtrl: on $routeChangeStart');
-  });
-
   // Palette.value has been updated by Performer
   socket.on('onValueUpdate', function (data) {
-    console.log('PlayCtrl.onValueUpdate: ', data);
+    //console.log('PlayCtrl.onValueUpdate: ', data);
     if (data.assetId === null) {
       return;
     }
@@ -125,7 +133,6 @@ angular.module('sp.player.play', [
     switch(asset.type) {
       case 'image':
         $scope.imageOpacity = {'opacity': asset.value.opacity};
-        console.log('opacity: ', $scope.imageOpacity);
 
         //$scope.imageClass = asset.value.visible ? 'show' : 'hide';
         $scope.imageUrl = imagePlayer.getImageUrl(asset, config.apiBase);
@@ -144,10 +151,7 @@ angular.module('sp.player.play', [
         }
         break;
       case 'light':
-        console.log('onValueUpdate light: colour=', asset.value.colou);
-        
-        // Convert message to dmxpro format
-        // Send info to dmxpro... somehow!
+        lightPlayer.play(asset.value);
         break;
     }
   });

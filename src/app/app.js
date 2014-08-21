@@ -11,19 +11,18 @@ angular.module('sp.player', [
 
   'uiAuth', 
   'spUtils', 
-  'uiSocket', 
+  'spConnection', 
 
   'ui.router',
   'ui.bootstrap'
 ])
 
-.config(function($locationProvider, $urlRouterProvider, config, socketProvider, authProvider, $stateProvider, authConfigProvider) {
+.config(function($locationProvider, $urlRouterProvider, config, authProvider, $stateProvider, authConfigProvider) {
   // Route configuration
   $locationProvider.html5Mode(true);  // no hash-urls
 
   // Redirect to connecting state.
   $urlRouterProvider.when('/', '/waiting');
-
 
   // Abstract state for different access levels
   $stateProvider.state('user', {
@@ -38,19 +37,24 @@ angular.module('sp.player', [
           return auth.requireUser(); 
         }
       },
-      socketInfo: function(user, socket, utils, auth) {
+      socket: function(user, connection, utils, auth) {
         var ns = utils.getSocketNamespace(user);
-        var token = auth.getToken(); 
         var room = user.roomId;
-        return socketProvider.requireAuthenticatedConnection(socket, ns, room, token);
+        var token = auth.getToken(); 
+        return connection.requireRoomConnection(ns, room, token);
       }
     }
   });
 
   authConfigProvider.setTokenKey('spPlayerToken'); 
   authConfigProvider.setApiBase(config.apiBase); 
+})
 
-
+.run(function($rootScope) {
+  $rootScope.$on('$stateChangeError', 
+function(event, toState, toParams, fromState, fromParams, error){ 
+    console.warn('$stateChangeError', error); 
+  });
 })
 
 .controller('AppCtrl', function() {

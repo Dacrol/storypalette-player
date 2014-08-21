@@ -33,6 +33,7 @@ module.exports = {
       'vendor/angular-animate/angular-animate.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+      'vendor/angular-socket-io/socket.js',
       'vendor/howler/howler.js'
     ],
     css: [],
@@ -50,7 +51,7 @@ module.exports = {
   shared_files: {
     js: [
       // Uses shared_dir
-      ['src/common/uiSocket/**/*.js', '!src/common/uiSocket/**/*.spec.js'],
+      ['src/common/spConnection/**/*.js', '!src/common/spConnection/**/*.spec.js'],
       ['src/common/spUtils/**/*.js', '!src/common/spUtils/**/*.spec.js'],
       ['src/common/uiAuth/**/*.js', '!src/common/uiAuth/**/*.spec.js'],
       ['src/common/uiImagePlayer/**/*.js', '!src/common/uiImagePlayer/**/*.spec.js'],

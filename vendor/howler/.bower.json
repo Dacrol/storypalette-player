@@ -11,7 +11,6 @@
     "commit": "c39e1e3544613b77ab419d4c769b108edc028925"
   },
   "_source": "git://github.com/goldfire/howler.js.git",
-  "_target": "~1.1.25",
-  "_originalSource": "howler",
-  "_direct": true
+  "_target": "~1.1.17",
+  "_originalSource": "howler"
 }
