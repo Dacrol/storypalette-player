@@ -32,6 +32,7 @@ angular.module('sp.player.play', [
   var resetPlayers = function() {
     audioPlayer.reset();
     imagePlayer.reset();
+    lightPlayer.reset();
     //initProgress();
   };
 
@@ -120,7 +121,7 @@ angular.module('sp.player.play', [
   $scope.imageOpacity = {};
 
   // Palette.value has been updated by Performer
-  socket.on('onValueUpdate', function (data) {
+  socket.on('onValueUpdate', function(data) {
     //console.log('PlayCtrl.onValueUpdate: ', data);
     if (data.assetId === null) {
       return;
@@ -138,16 +139,14 @@ angular.module('sp.player.play', [
         $scope.imageUrl = imagePlayer.getImageUrl(asset, config.apiBase);
         break;
       case 'sound':
+        var id = getSoundUrl(asset);
         if (asset.value.state === 'stopped') {
-          audioPlayer.stop(data.assetId);
+          audioPlayer.stop(id);
         } else if (asset.value.state === 'playing') {
-          audioPlayer.play(data.assetId);
-        } else {
-            //console.log('Unknown sound state');
-        }
-
+          audioPlayer.play(id);
+        } 
         if (typeof asset.value.volume !== 'undefined') {
-          audioPlayer.setVolume(data.assetId, asset.value.volume);
+          audioPlayer.setVolume(id, asset.value.volume);
         }
         break;
       case 'light':
@@ -158,25 +157,28 @@ angular.module('sp.player.play', [
 
   // These should move to services
   var getSoundUrl = function(asset) {
-    var url = config.apiBase + 'sound/' + asset.source.id + '.' + asset.source.extension;
-    return url;
+    //var url = config.apiBase + 'sound/' + asset.source.id + '.' + asset.source.extension;
+    
+    // We only use ogg in storypalette-player-app.
+    return config.apiBase + 'sound/' + asset.source.id + '/ogg';
   };
 
   // Setup sounds
-  for (var i = 0;i < $scope.palette.assets.length;i++){
-    var asset = $scope.palette.assets[i];
+  _.each($scope.palette.assets, function(asset) {
     if (asset.type === 'sound')  {
+      var url = getSoundUrl(asset);
       var options = {};
+      options.format = 'ogg';
       options.loop = asset.loop || false;
       options.autoplay = options.loop; // autostart looping sounds
       options.volume = options.loop ? 0.0 : 0.9;  // start
-      audioPlayer.newSound(i, getSoundUrl(asset), options);
+      audioPlayer.newSound(url, options);
 
       // TODO: Hack, it doesn't work to pass 0.0 as volume on creation
       if (options.loop) {
-         audioPlayer.setVolume(i, 0.0);
+         audioPlayer.setVolume(url, 0.0);
       }
     }
-  }
+  });
 
 });

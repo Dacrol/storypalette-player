@@ -18,7 +18,11 @@ angular.module('sp.player.play.lightPlayer', [])
     play: function(value) {
       console.log('lightPlayer.play() colour', value.colour);  
       dmxSocket.emit('onValueUpdate', value);
-    }  
+    },
+    reset: function() {
+      console.log('emit reset');
+      dmxSocket.emit('reset');  
+    }
   };
 })
 ;
