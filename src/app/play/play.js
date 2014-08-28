@@ -10,7 +10,6 @@ angular.module('sp.player.play', [
 ])
 
 .config(function($stateProvider) {
-
   $stateProvider.state('user.play', {
     url: '/play/:paletteId',
     templateUrl: 'play/play.tpl.html',
@@ -27,13 +26,17 @@ angular.module('sp.player.play', [
 })
 
 .controller('PlayCtrl', function($scope, $state, $location, socket, audioPlayer, imagePlayer, lightPlayer, palette, config, user) {
-  console.log('\n**** PlayCtrl ****');
-
   var resetPlayers = function() {
     audioPlayer.reset();
     imagePlayer.reset();
     lightPlayer.reset();
-    //initProgress();
+  };
+
+  var disconnect = function() {
+    console.log('PlayCtrl disconnect!');
+    resetPlayers();
+     
+    socket.removeAllListeners();  // Avoid duplicate event listeners
   };
 
   var room = _.find(user.organisation.rooms, {id: user.roomId});
@@ -47,14 +50,13 @@ angular.module('sp.player.play', [
 
   // Palette is loaded when page is loaded
   $scope.palette = palette; // Palettes.getPalette();
-  //initProgress();
 
   // Send palette to performer
   socket.emit('activePalette', $scope.palette);
 
   // Incoming request from Performer
   socket.on('onRequestPalette', function(paletteId) {
-    console.log('PlayCtrl.onRequestPalette: Get palette ', paletteId);
+    console.log('PlayCtrl.onRequestPalette:', paletteId);
 
     // Performer wants us to switch to another palette
     if ($scope.palette._id === paletteId) {
@@ -73,13 +75,9 @@ angular.module('sp.player.play', [
     }
   });
   
-  var disconnect = function() {
-    resetPlayers();
-    socket.removeAllListeners();  // Avoid duplicate event listeners
-  };
 
   $scope.$on('$destroy', function() {
-    console.log('playCtrl scope destroyed');
+    disconnect();
   });
 
   // Performer disconnected.
@@ -122,7 +120,6 @@ angular.module('sp.player.play', [
 
   // Palette.value has been updated by Performer
   socket.on('onValueUpdate', function(data) {
-    //console.log('PlayCtrl.onValueUpdate: ', data);
     if (data.assetId === null) {
       return;
     }

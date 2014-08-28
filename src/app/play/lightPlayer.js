@@ -1,5 +1,6 @@
 angular.module('sp.player.play.lightPlayer', [])
 
+// Handles connection to dmxplayer
 .factory('lightPlayer', function() {
     // connect to socket server
   //var room = room;
@@ -7,21 +8,25 @@ angular.module('sp.player.play.lightPlayer', [])
 
   return {
     init: function(room) {
-      console.log('connecting to dmxplayer...');
+      console.log('lightPlayer: Connecting to dmxplayer...');
       dmxSocket = io('http://localhost:8891');
+
       dmxSocket.on('connect', function() {
-        console.log('connected to dmxplayer!');
+        console.log('lightPlayer: Connected to dmxplayer');
         dmxSocket.emit('init', {room: room});
       });
     
     },
     play: function(value) {
-      console.log('lightPlayer.play() colour', value.colour);  
+      //console.log('lightPlayer: colour', value.colour);  
       dmxSocket.emit('onValueUpdate', value);
     },
     reset: function() {
-      console.log('emit reset');
-      dmxSocket.emit('reset');  
+      console.log('lightPlayer: Reset');
+      if (dmxSocket) {
+        dmxSocket.emit('reset');  
+        dmxSocket = null;
+      }
     }
   };
 })
