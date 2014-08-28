@@ -22,7 +22,7 @@ angular.module('sp.player.play.lightPlayer', [])
       dmxSocket.emit('onValueUpdate', value);
     },
     reset: function() {
-      console.log('lightPlayer: Reset');
+      console.log('lightPlayer: Reset --> Disonnect');
       if (dmxSocket) {
         dmxSocket.disconnect();
         dmxSocket = null;
