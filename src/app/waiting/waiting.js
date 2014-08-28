@@ -6,12 +6,12 @@ angular.module('sp.player.waiting', [
   $stateProvider.state('user.waiting', {
     url: '/waiting',
     templateUrl: 'waiting/waiting.tpl.html',
-    controller: 'WaitingCtrl',
+    controller: 'WaitingCtrl'
   });
 })
 
-// Waiting for palette
-.contrller('WaitingCtrl', function($scope, socket, $location, user) {
+// Waiting for palette.
+.controller('WaitingCtrl', function($scope, socket, $location, user) {
     $scope.user = user;
     $scope.room = _.find(user.organisation.rooms, {id: user.roomId}); 
 
