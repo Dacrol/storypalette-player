@@ -9,7 +9,7 @@ angular.module('sp.player.play.lightPlayer', [])
   return {
     init: function(room) {
       console.log('lightPlayer: Connecting to dmxplayer...');
-      dmxSocket = io('http://localhost:8891');
+      dmxSocket = io('http://localhost:8891', {forceNew: true});
 
       dmxSocket.on('connect', function() {
         console.log('lightPlayer: Connected to dmxplayer');
@@ -24,7 +24,7 @@ angular.module('sp.player.play.lightPlayer', [])
     reset: function() {
       console.log('lightPlayer: Reset');
       if (dmxSocket) {
-        dmxSocket.emit('reset');  
+        dmxSocket.disconnect();
         dmxSocket = null;
       }
     }
