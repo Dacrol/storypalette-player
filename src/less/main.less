@@ -16,7 +16,7 @@ body {
   cursor: none !important;
   position: fixed;
   padding: 0;
-  margin: 0; 
+  margin: 0;
   width: 100%;
   height: 100%;
 }
@@ -35,14 +35,20 @@ body {
   text-align: center;
 }
 
-.fullscreenImage {
-  z-index: 100;
+.imageContainer {
   position: fixed;
-  top:0px;
-  left:0px;
-  bottom:0px;
-  right:0px;
-  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.fitImage {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
 }
 
 .loading {
