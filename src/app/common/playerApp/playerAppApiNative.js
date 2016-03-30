@@ -9,6 +9,9 @@ angular.module('sp.player.common.playerAppApiNative', [
   return {
     getCredentials: function() {
       return ipc.sendSync('getCredentials');
+    },
+    dmxMessage: function(value) {
+      ipc.send('dmxMessage', value); 
     }
   };
 })

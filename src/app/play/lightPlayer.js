@@ -1,7 +1,9 @@
-angular.module('sp.player.play.lightPlayer', [])
+angular.module('sp.player.play.lightPlayer', [
+  'sp.player.common.playerApp',
+])
 
 // Handles connection to dmxplayer
-.factory('lightPlayer', function() {
+.factory('lightPlayer', function(playerApp) {
     // connect to socket server
   //var room = room;
   var dmxSocket;
@@ -20,6 +22,9 @@ angular.module('sp.player.play.lightPlayer', [])
     play: function(value) {
       //console.log('lightPlayer: colour', value.colour);  
       dmxSocket.emit('onValueUpdate', value);
+
+      // For newer player-app
+      playerApp.dmxMessage(value);
     },
     reset: function() {
       console.log('lightPlayer: Reset --> Disonnect');

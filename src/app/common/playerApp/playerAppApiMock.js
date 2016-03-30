@@ -6,6 +6,9 @@ angular.module('sp.player.common.playerAppApiMock', [
   return {
     getCredentials: function() {
       return null; 
+    },
+    dmxMessage: function(value) {
+      console.log('dmxMessage', value); 
     }
   };
 })
