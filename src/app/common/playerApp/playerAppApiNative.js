@@ -12,6 +12,12 @@ angular.module('sp.player.common.playerAppApiNative', [
     },
     dmxMessage: function(value) {
       ipc.send('dmxMessage', value); 
+    },
+    startDmx: function(room) {
+      ipc.send('startDmx', room); 
+    },
+    stopDmx: function() {
+      ipc.send('stopDmx'); 
     }
   };
 })
