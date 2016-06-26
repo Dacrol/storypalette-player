@@ -10,6 +10,9 @@
     "dev": "npm run build && NODE_ENV=development node server",
     "deploy": "git push heroku master"
   },
+  "engines": {
+    "node": "5.8.0"
+  },
   "dependencies": {
     "angular": "^1.5.5",
     "angular-socket-io": "^0.6.0",
