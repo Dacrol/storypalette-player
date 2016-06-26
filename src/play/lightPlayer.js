@@ -13,6 +13,7 @@ angular.module('sp.player.play.lightPlayer', [
       playerApp.startDmx(room);
 
       // Old player app uses sockets
+      /* TODO: Make backwards compatible?
       console.log('lightPlayer: Connecting to dmxplayer...');
       dmxSocket = io('http://localhost:8891', {forceNew: true});
 
@@ -20,11 +21,14 @@ angular.module('sp.player.play.lightPlayer', [
         console.log('lightPlayer: Connected to dmxplayer');
         dmxSocket.emit('init', {room: room});
       });
+      */
     
     },
     play: function(value) {
       //console.log('lightPlayer: colour', value.colour);  
-      dmxSocket.emit('onValueUpdate', value);
+      
+      // TODO: Old player
+      //dmxSocket.emit('onValueUpdate', value);
 
       // For new player-app
       playerApp.dmxMessage(value);

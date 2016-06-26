@@ -27,9 +27,8 @@ app.get('/*', function(req, res) {
 
 // Start server.
 var port = process.env.PORT || config.port;
-const mode = process.env.NODE_ENV || 'production';
+const mode = process.env.NODE_ENV;
 
 app.listen(port, function() {
   console.log(`storypalette-player in ${mode} mode at port ${port}`);
 });
-module.exports = app;
