@@ -50,6 +50,7 @@ angular.module('sp.player', [
         }
       },
       socket: function(user, connection, utils, auth) {
+        console.log('user', user);
         var ns = utils.getSocketNamespace(user);
         var room = user.roomId;
         var token = auth.getToken(); 

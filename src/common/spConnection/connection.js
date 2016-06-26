@@ -1,4 +1,5 @@
 import btFordSocketIo from 'angular-socket-io';
+import io from 'socket.io-client';
 
 angular.module('spConnection', [
   'btford.socket-io'

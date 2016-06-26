@@ -6,7 +6,8 @@ angular.module('spUtils', [])
 
     // Socket utils. 
     getSocketNamespace: function(user) {
-      return 'http://api.storypalette.net:8890/' + user.organisation._id;
+      // TODO: hacky
+      return `${window.env.socketBase}${user.organisation._id}`;
     },
 
     // Returns an array of available rooms for a (non-player user)
