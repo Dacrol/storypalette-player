@@ -3,6 +3,7 @@
   "name": "storypalette-player",
   "version": "0.6.0",
   "homepage": "http://www.storypalette.net",
+  "license": "ISC",
   "repository": "https://github.com/storypalette/storypalette-player",
   "scripts": {
     "build": "webpack --config webpack.config.js",
