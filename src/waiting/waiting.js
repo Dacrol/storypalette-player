@@ -1,5 +1,6 @@
 // TODO: Get rid of underscore!
 import _ from 'underscore';
+import template from './waiting.tpl.html';
 
 angular.module('sp.player.waiting', [
   'ui.router'
@@ -8,7 +9,7 @@ angular.module('sp.player.waiting', [
 .config(function($stateProvider) {
   $stateProvider.state('user.waiting', {
     url: '/waiting',
-    templateUrl: 'waiting/waiting.tpl.html',
+    templateUrl: template,
     controller: 'WaitingCtrl'
   });
 })

@@ -1,6 +1,7 @@
 import './lightPlayer.js';
 import '../common/uiImagePlayer/imagePlayer.js';
 import '../common/uiAudioPlayer/audioPlayer.js';
+import template from './play.tpl.html';
 
 // TODO: Get rid of underscore!
 import _ from 'underscore';
@@ -19,7 +20,7 @@ angular.module('sp.player.play', [
 .config(function($stateProvider) {
   $stateProvider.state('user.play', {
     url: '/play/:paletteId',
-    templateUrl: 'play/play.tpl.html',
+    templateUrl: template,
     controller: 'PlayCtrl',
     resolve: {
       palette: function(palettes, $stateParams) {
@@ -40,9 +41,7 @@ angular.module('sp.player.play', [
   };
 
   var disconnect = function() {
-    console.log('PlayCtrl disconnect!');
     resetPlayers();
-     
     socket.removeAllListeners();  // Avoid duplicate event listeners
   };
 
@@ -131,9 +130,12 @@ angular.module('sp.player.play', [
       return;
     }
 
+
     $scope.valueUpdate = true;
     var asset = $scope.palette.assets[data.assetId];
     asset.value = data.value;
+
+    //console.log('data', data, 'asset', asset);
 
     switch(asset.type) {
       case 'image':
@@ -141,6 +143,8 @@ angular.module('sp.player.play', [
 
         //$scope.imageClass = asset.value.visible ? 'show' : 'hide';
         $scope.imageUrl = imagePlayer.getImageUrl(asset, config.apiBase);
+        //$scope.imageUrl = 'http://storypalette.imgix.net/e699ea984be3f76cc9140190bfa14370.jpg';
+        console.log('Show image', $scope.imageUrl);
         break;
       case 'sound':
         var id = getSoundUrl(asset);
