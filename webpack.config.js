@@ -7,6 +7,7 @@ var ngTemplateLoader = (
 
 module.exports = {
   entry: './src/app.js',
+  target: 'electron-renderer',
   output: {
     path: __dirname + '/public',
     filename: 'bundle.js'

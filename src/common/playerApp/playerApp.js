@@ -13,12 +13,14 @@ angular.module('sp.player.common.playerApp', [
 
 // Include the correct playerApp module for browser/native environment.
 // TODO: Fix conditional require!
+// TODO: Now this only works in Electron
 //try {
-  //var ipc = require('ipc');            
+  var {ipcRenderer} = require('electron');            
+  require('./playerAppApiNative');
   // If we get here we are running in atom-shell player-app.
-  //angular.module('sp.player.common.playerApp').requires.push('sp.player.common.playerAppApiNative');
+  angular.module('sp.player.common.playerApp').requires.push('sp.player.common.playerAppApiNative');
 //} catch (e) {
   // If we get here we are running in web browser.
-  require('./playerAppApiMock');
-  angular.module('sp.player.common.playerApp').requires.push('sp.player.common.playerAppApiMock');
+  //require('./playerAppApiMock');
+  //angular.module('sp.player.common.playerApp').requires.push('sp.player.common.playerAppApiMock');
 //}

@@ -1,23 +1,23 @@
 angular.module('sp.player.common.playerAppApiNative', [
 ])
 
-.factory('playerAppApi', function($q) {
+.factory('playerAppApi', function() {
   console.log('Using playerAppApiNative');
 
-  var ipc = require('ipc');            
+  var {ipcRenderer} = require('electron');            
 
   return {
     getCredentials: function() {
-      return ipc.sendSync('getCredentials');
+      return ipcRenderer.sendSync('getCredentials');
     },
     dmxMessage: function(value) {
-      ipc.send('dmxMessage', value); 
+      ipcRenderer.send('dmxMessage', value); 
     },
     startDmx: function(room) {
-      ipc.send('startDmx', room); 
+      ipcRenderer.send('startDmx', room); 
     },
     stopDmx: function() {
-      ipc.send('stopDmx'); 
+      ipcRenderer.send('stopDmx'); 
     }
   };
 })
