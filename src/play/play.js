@@ -164,11 +164,8 @@ angular.module('sp.player.play', [
   });
 
   // These should move to services
-  var getSoundUrl = function(asset) {
-    //var url = config.apiBase + 'sound/' + asset.source.id + '.' + asset.source.extension;
-    
-    // We only use ogg in storypalette-player-app.
-    return config.apiBase + 'sound/' + asset.source.id + '/ogg';
+  var getSoundUrl = function(asset) {    
+    return config.apiBase + 'sound/' + asset.source.id + '/' + asset.source.extension;
   };
 
   // Setup sounds
@@ -176,7 +173,7 @@ angular.module('sp.player.play', [
     if (asset.type === 'sound')  {
       var url = getSoundUrl(asset);
       var options = {};
-      options.format = 'ogg';
+      options.format = asset.source.extension;
       options.loop = asset.loop || false;
       options.autoplay = options.loop; // autostart looping sounds
       options.volume = options.loop ? 0.0 : 0.9;  // start
