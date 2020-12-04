@@ -1,8 +1,8 @@
 const productionConfig = {
   //apiBase: 'http://api.storypalette.net/v1/',
   //socketBase: 'http://api.storypalette.net/',
-  apiBase: 'http://server.storypalette.se/v1/',
-  socketBase: 'http://server.storypalette.se/',
+  apiBase: 'https://server.storypalette.se/v1/',
+  socketBase: 'https://server.storypalette.se/',
   environment: 'production',
   port: 8881,
 };
